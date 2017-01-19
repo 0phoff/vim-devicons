@@ -439,19 +439,19 @@ function! s:setSyntax()
       augroup END
 
       if exists("g:loaded_lightline")
-        execute 'highlight default coldeviconsLLN'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['normal'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['normal'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
-        if exists("pal['insert'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]]")
-          execute 'highlight default coldeviconsLLI'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['insert'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['insert'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
+        execute 'highlight default coldeviconsLLN'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['normal'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['normal'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
+        if exists("pal['insert'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]]")
+          execute 'highlight default coldeviconsLLI'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['insert'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['insert'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
         else
           execute 'highlight default link coldeviconsLLI'.color.' coldeviconsLLN'.color
         endif
-        if exists("pal['replace'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]]")
-          execute 'highlight default coldeviconsLLR'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['replace'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['replace'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
+        if exists("pal['replace'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]]")
+          execute 'highlight default coldeviconsLLR'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['replace'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['replace'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
         else
           execute 'highlight default link coldeviconsLLR'.color.' coldeviconsLLN'.color
         endif
-        if exists("pal['visual'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]]")
-          execute 'highlight default coldeviconsLLV'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['visual'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['visual'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
+        if exists("pal['visual'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]]")
+          execute 'highlight default coldeviconsLLV'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['visual'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['visual'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
         else
           execute 'highlight default link coldeviconsLLV'.color.' coldeviconsLLN'.color
         endif
