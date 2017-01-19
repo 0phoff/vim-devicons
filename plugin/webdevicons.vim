@@ -759,13 +759,13 @@ endfunction
 "========================================================================
 
 " scope: public
-function! webdevicons#ColoredLightLine(pre, color, post)     " Arguments : string with function names that return text before colored part, colored part, after colored part
+function! webdevicons#ColoredLightLine(pre, colored, post)     " Arguments : string with function names that return text before colored part, colored part, after colored part
   let colors = keys(s:iconcolormap)
   let icon = substitute(WebDevIconsGetFileTypeSymbol(), "\u00A0", '', '')
 
-  let a:pre =     (a:pre ==# '')      ? '' : '%{'.a:pre.'}'
-  let a:colored = (a:colored ==# '')  ? '' : '%{'.a:colored.'}'
-  let a:post =    (a:post ==# '')     ? '' : '%{'.a:post.'}'
+  let pre =     (a:pre ==# '')      ? '' : '%{'.a:pre.'}'
+  let colored = (a:colored ==# '')  ? '' : '%{'.a:colored.'}'
+  let post =    (a:post ==# '')     ? '' : '%{'.a:post.'}'
 
   for color in colors
     let index = index(s:iconcolormap[color], icon)
@@ -775,7 +775,7 @@ function! webdevicons#ColoredLightLine(pre, color, post)     " Arguments : strin
   endfor
 
   if index == -1
-    return a:pre . a:colored . a:post
+    return pre . colored . post
   else
     let m = mode()
     if m ==# 'n'
@@ -789,7 +789,7 @@ function! webdevicons#ColoredLightLine(pre, color, post)     " Arguments : strin
     else
       let group = 'coldeviconsLLN'
     end
-    return a:pre . '%#'.group.color.'#' . a:colored . '%#Lightline'.g:WebDevIconsLightLineComponent[0].'_active_'.g:WebDevIconsLightLineComponent[1].'#' . a:post
+    return pre . '%#'.group.color.'#' . colored . '%#Lightline'.g:WebDevIconsLightLineComponent[0].'_active_'.g:WebDevIconsLightLineComponent[1].'#' . post
   endif
 endfunction
 
