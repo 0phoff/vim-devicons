@@ -30,6 +30,10 @@ if !exists('g:webdevicons_enable')
   let g:webdevicons_enable = 1
 endif
 
+if !exists('g:webdevicons_enable_colors')
+  let g:webdevicons_enable_colors = 1
+endif
+
 if !exists('g:webdevicons_enable_nerdtree')
   let g:webdevicons_enable_nerdtree = 1
 endif
@@ -143,6 +147,10 @@ if !exists('g:DevIconsDefaultFolderOpenSymbol')
     let g:DevIconsDefaultFolderOpenSymbol = ''
 endif
 
+if !exists('g:WebDevIconsLightLineComponent')
+  let g:WebDevIconsLightLineComponent = ['left', '1']
+endif
+
 " functions {{{1
 "========================================================================
 
@@ -220,6 +228,7 @@ function! s:setDictionaries()
         \ 'png'      : '',
         \ 'gif'      : '',
         \ 'ico'      : '',
+        \ 'svg'      : '',
         \ 'twig'     : '',
         \ 'cpp'      : '',
         \ 'c++'      : '',
@@ -303,6 +312,43 @@ function! s:setDictionaries()
         \ '.*mootools.*\.js$'     : ''
         \}
 
+  let s:colormap = {
+        \'Brown'        : '905532',
+        \'Aqua'         : '3AFFDB',
+        \'Blue'         : '689FB6',
+        \'Darkblue'     : '44788E',
+        \'Purple'       : '834F79',
+        \'Red'          : 'AE403F',
+        \'Beige'        : 'F5C06F',
+        \'Yellow'       : 'F09F17',
+        \'Orange'       : 'D4843E',
+        \'Darkorange'   : 'F16529',
+        \'Pink'         : 'CB6F6F',
+        \'Salmon'       : 'EE6E73',
+        \'Green'        : '8FAA54',
+        \'Lightgreen'   : '31B53E',
+        \'White'        : 'FFFFFF'
+        \}
+
+  " Default Unused (will get color of surrounding block) : , , 
+  let s:iconcolormap = {
+        \'Brown'        : [''],
+        \'Aqua'         : [''],
+        \'Blue'         : ['','','','','','','','','','',''],
+        \'Darkblue'     : ['',''],
+        \'Purple'       : ['','','','','',''],
+        \'Red'          : ['','','','','',''],
+        \'Beige'        : ['','','',''],
+        \'Yellow'       : ['','','λ','',''],
+        \'Orange'       : [''],
+        \'Darkorange'   : ['','','','',''],
+        \'Pink'         : ['',''],
+        \'Salmon'       : [''],
+        \'Green'        : ['','','','',''],
+        \'Lightgreen'   : ['',''],
+        \'White'        : ['','','','','','']
+        \}
+
   if !exists('g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols')
     let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
   endif
@@ -349,6 +395,68 @@ function! s:setSyntax()
       autocmd FileType nerdtree setlocal conceallevel=3
       autocmd FileType nerdtree setlocal concealcursor=nvic
     augroup END
+  endif
+
+  if g:webdevicons_enable_colors == 1
+	  let colors = keys(s:colormap)
+    
+    if exists('g:loaded_lightline')
+      let pal = lightline#palette()
+    endif
+    
+    let filetypes = []  " Buffers that have filetypes should be added here
+    let bufname = []    " If the buffer has no filetype, but will always have same name it can be added here
+    if exists('g:loaded_nerd_tree') && g:webdevicons_enable_nerdtree
+      call add(filetypes, "nerdtree")
+    endif
+    if exists('g:loaded_ctrlp') && g:webdevicons_enable_ctrlp
+      call add(bufname, "ControlP")
+    endif
+    if exists('g:loaded_unite') && g:webdevicons_enable_unite
+      call add(filetypes, "unite")
+    endif
+    if exists('g:loaded_denite') && g:webdevicons_enable_denite
+      call add(bufname, "\[denite\]*")
+    endif
+    if exists('g:loaded_startify')
+      call add(filetypes, "startify")
+    endif
+    if exists("g:loaded_vimfiler") && g:webdevicons_enable_vimfiler
+      call add(filetypes, "vimfiler")
+    endif
+    let filetypes = join(filetypes, ",")
+    let bufname = join(bufname, ",")
+    
+    augroup devicon_colors
+      au!
+    augroup END
+    for color in colors
+      execute 'highlight default coldevicons'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color])
+      
+      augroup devicon_colors
+        execute 'autocmd FileType '.filetypes.' syntax match coldevicons'.color.' /\v'.join(g:coldevicons_iconmap[color], '|').'/ containedin=ALL'
+        execute 'autocmd BufEnter,BufWinEnter '.bufname.' syntax match coldevicons'.color.' /\v'.join(g:coldevicons_iconmap[color], '|').'/ containedin=ALL'
+      augroup END
+
+      if exists("g:loaded_lightline")
+        execute 'highlight default coldeviconsLLN'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['normal'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['normal'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
+        if exists("pal['insert'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]]")
+          execute 'highlight default coldeviconsLLI'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['insert'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['insert'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
+        else
+          execute 'highlight default link coldeviconsLLI'.color.' coldeviconsLLN'.color
+        endif
+        if exists("pal['replace'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]]")
+          execute 'highlight default coldeviconsLLR'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['replace'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['replace'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
+        else
+          execute 'highlight default link coldeviconsLLR'.color.' coldeviconsLLN'.color
+        endif
+        if exists("pal['visual'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]]")
+          execute 'highlight default coldeviconsLLV'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['visual'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['visual'][s:WebDevIconsLightLineComponent[0]][s:WebDevIconsLightLineComponent[1]][3]
+        else
+          execute 'highlight default link coldeviconsLLV'.color.' coldeviconsLLN'.color
+        endif
+      endif
+    endfor
   endif
 endfunction
 
@@ -644,6 +752,45 @@ function! WebDevIconsGetFileFormatSymbol(...)
   let artifactFix = "\u00A0"
 
   return fileformat . artifactFix
+endfunction
+
+
+" for Lightline plugin {{{3
+"========================================================================
+
+" scope: public
+function! deviconsColors#ColoredLightLine(pre, color, post)     " Arguments : string with function names that return text before colored part, colored part, after colored part
+  let colors = keys(g:coldevicons_iconmap)
+  let icon = substitute(WebDevIconsGetFileTypeSymbol(), "\u00A0", '', '')
+
+  let a:pre =     (a:pre ==# '')      ? '' : '%{'.a:pre.'}'
+  let a:colored = (a:colored ==# '')  ? '' : '%{'.a:colored.'}'
+  let a:post =    (a:post ==# '')     ? '' : '%{'.a:post.'}'
+
+  for color in colors
+    let index = index(g:coldevicons_iconmap[color], icon)
+    if index != -1
+      break
+    endif
+  endfor
+
+  if index == -1
+    return a:pre . a:colored . a:post
+  else
+    let m = mode()
+    if m ==# 'n'
+      let group = 'coldeviconsLLN'
+    elseif m ==# 'i' || m ==# 't'
+      let group = 'coldeviconsLLI'
+    elseif m ==# 'v' || m ==# '\<C-v>' || m ==# 's' || m ==# '\<C-s>'
+      let group = 'coldeviconsLLV'
+    elseif m ==# 'r'
+      let group = 'coldeviconsLLR'
+    else
+      let group = 'coldeviconsLLN'
+    end
+    return a:pre . '%#'.group.color.'#' . a:colored . '%#Lightline'.g:WebDevIconsLightLineComponent[0].'_active_'.g:WebDevIconsLightLineComponent[1].'#' . a:post
+  endif
 endfunction
 
 " for airline plugin {{{3
