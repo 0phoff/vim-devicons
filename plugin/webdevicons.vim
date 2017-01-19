@@ -759,7 +759,7 @@ endfunction
 "========================================================================
 
 " scope: public
-function! deviconsColors#ColoredLightLine(pre, color, post)     " Arguments : string with function names that return text before colored part, colored part, after colored part
+function! webdevicons#ColoredLightLine(pre, color, post)     " Arguments : string with function names that return text before colored part, colored part, after colored part
   let colors = keys(g:coldevicons_iconmap)
   let icon = substitute(WebDevIconsGetFileTypeSymbol(), "\u00A0", '', '')
 
