@@ -434,8 +434,8 @@ function! s:setSyntax()
       execute 'highlight default coldevicons'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color])
       
       augroup devicon_colors
-        execute 'autocmd FileType '.filetypes.' syntax match coldevicons'.color.' /\v'.join(g:coldevicons_iconmap[color], '|').'/ containedin=ALL'
-        execute 'autocmd BufEnter,BufWinEnter '.bufname.' syntax match coldevicons'.color.' /\v'.join(g:coldevicons_iconmap[color], '|').'/ containedin=ALL'
+        execute 'autocmd FileType '.filetypes.' syntax match coldevicons'.color.' /\v'.join(s:iconcolormap[color], '|').'/ containedin=ALL'
+        execute 'autocmd BufEnter,BufWinEnter '.bufname.' syntax match coldevicons'.color.' /\v'.join(s:iconcolormap[color], '|').'/ containedin=ALL'
       augroup END
 
       if exists("g:loaded_lightline")
@@ -760,7 +760,7 @@ endfunction
 
 " scope: public
 function! webdevicons#ColoredLightLine(pre, color, post)     " Arguments : string with function names that return text before colored part, colored part, after colored part
-  let colors = keys(g:coldevicons_iconmap)
+  let colors = keys(s:iconcolormap)
   let icon = substitute(WebDevIconsGetFileTypeSymbol(), "\u00A0", '', '')
 
   let a:pre =     (a:pre ==# '')      ? '' : '%{'.a:pre.'}'
@@ -768,7 +768,7 @@ function! webdevicons#ColoredLightLine(pre, color, post)     " Arguments : strin
   let a:post =    (a:post ==# '')     ? '' : '%{'.a:post.'}'
 
   for color in colors
-    let index = index(g:coldevicons_iconmap[color], icon)
+    let index = index(s:iconcolormap[color], icon)
     if index != -1
       break
     endif
