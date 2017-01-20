@@ -424,8 +424,8 @@ function! s:setSyntax()
     if exists("g:loaded_vimfiler") && g:webdevicons_enable_vimfiler
       call add(filetypes, "vimfiler")
     endif
-    let filetypes = join(filetypes, ",")
-    let bufname = join(bufname, ",")
+    let stringFiletypes = join(filetypes, ",")
+    let stringBufname = join(bufname, ",")
     
     augroup devicon_colors
       au!
@@ -434,8 +434,12 @@ function! s:setSyntax()
       execute 'highlight default coldevicons'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color])
       
       augroup devicon_colors
-        execute 'autocmd FileType '.filetypes.' syntax match coldevicons'.color.' /\v'.join(s:iconcolormap[color], '|').'/ containedin=ALL'
-        execute 'autocmd BufEnter,BufWinEnter '.bufname.' syntax match coldevicons'.color.' /\v'.join(s:iconcolormap[color], '|').'/ containedin=ALL'
+        if stringFiletypes != ""
+          execute 'autocmd FileType '.stringFiletypes.' syntax match coldevicons'.color.' /\v'.join(s:iconcolormap[color], '|').'/ containedin=ALL'
+        endif
+        if stringBufname != ""
+          execute 'autocmd BufEnter,BufWinEnter '.stringBufname.' syntax match coldevicons'.color.' /\v'.join(s:iconcolormap[color], '|').'/ containedin=ALL'
+        endif
       augroup END
 
       if exists("g:loaded_lightline")
