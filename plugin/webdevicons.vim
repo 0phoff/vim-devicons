@@ -441,26 +441,15 @@ function! s:setSyntax()
           execute 'autocmd BufEnter,BufWinEnter '.stringBufname.' syntax match coldevicons'.color.' /\v'.join(s:iconcolormap[color], '|').'/ containedin=ALL'
         endif
       augroup END
-
+      
       if exists("g:loaded_lightline")
-        execute 'highlight default coldeviconsLLN'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['normal'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['normal'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
-        if exists("pal['insert'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]]")
-          execute 'highlight default coldeviconsLLI'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['insert'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['insert'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
-        else
-          execute 'highlight default link coldeviconsLLI'.color.' coldeviconsLLN'.color
-        endif
-        if exists("pal['replace'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]]")
-          execute 'highlight default coldeviconsLLR'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['replace'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['replace'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
-        else
-          execute 'highlight default link coldeviconsLLR'.color.' coldeviconsLLN'.color
-        endif
-        if exists("pal['visual'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]]")
-          execute 'highlight default coldeviconsLLV'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['visual'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['visual'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
-        else
-          execute 'highlight default link coldeviconsLLV'.color.' coldeviconsLLN'.color
-        endif
+        execute 'highlight default coldeviconsLL'.color.' guifg=#'.s:colormap[color].' ctermfg='.deviconsColors#rgb(s:colormap[color]).' guibg='.pal['normal'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][1].' ctermbg='.pal['normal'][g:WebDevIconsLightLineComponent[0]][g:WebDevIconsLightLineComponent[1]][3]
       endif
     endfor
+    
+    if exists('g:loaded_lightline')
+      call lightline#update()
+    endif
   endif
 endfunction
 
@@ -781,19 +770,7 @@ function! webdevicons#ColoredLightLine(pre, colored, post)     " Arguments : str
   if index == -1
     return pre . colored . post
   else
-    let m = mode()
-    if m ==# 'n'
-      let group = 'coldeviconsLLN'
-    elseif m ==# 'i' || m ==# 't'
-      let group = 'coldeviconsLLI'
-    elseif m ==# 'v' || m ==# '\<C-v>' || m ==# 's' || m ==# '\<C-s>'
-      let group = 'coldeviconsLLV'
-    elseif m ==# 'r'
-      let group = 'coldeviconsLLR'
-    else
-      let group = 'coldeviconsLLN'
-    end
-    return pre . '%#'.group.color.'#' . colored . '%#Lightline'.g:WebDevIconsLightLineComponent[0].'_active_'.g:WebDevIconsLightLineComponent[1].'#' . post
+    return pre . '%#coldeviconsLL'.color.'#' . colored . '%#Lightline'.g:WebDevIconsLightLineComponent[0].'_active_'.g:WebDevIconsLightLineComponent[1].'#' . post
   endif
 endfunction
 
