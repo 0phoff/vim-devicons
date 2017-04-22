@@ -416,7 +416,7 @@ function! s:setSyntax()
       call add(filetypes, "unite")
     endif
     if exists('g:loaded_denite') && g:webdevicons_enable_denite
-      call add(bufname, "\\[denite\\]*")
+      call add(bufname, "\\[denite\\]")
     endif
     if exists('g:loaded_startify')
       call add(filetypes, "startify")

@@ -2,9 +2,10 @@
 " FILE: deviconsColors.vim
 " Version: 0.8.5
 " Webpage: https://github.com/ryanoasis/vim-devicons
-" Maintainer: 0phoff
+" Maintainer: ryanoasis
 "=============================================================================
 " Code taken from Desert256 colorscheme    ->  call s:rgb('HEXString') to get cterm equivalent color
+
 " Returns an approximate grey index for the given grey level
 fun! s:grey_number(x)
   if &t_Co == 88
